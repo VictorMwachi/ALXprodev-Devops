@@ -1,1 +1,1 @@
-curl -s https://pokeapi.co/api/v2/pokemon/ -o data.json 2>errors.txt
+curl -s https://pokeapi.co/api/v2/pokemon/?limit=1000 -o data.json 2>errors.txt

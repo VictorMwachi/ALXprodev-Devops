@@ -1,0 +1,11 @@
+curl -s https://pokeapi.co/api/v2/pokemon?limit=10 | jq -c '.results[]'|
+while read -r pokemon; do
+  name=$(echo "$pokemon" | jq -r '.name')
+  echo "fetching data for $name"
+  url=$(echo "$pokemon" | jq -r '.url')
+  curl -s "$url">> $name.json
+  #echo "Name: $name, URL: $url"
+  #echo $pokemon
+
+  # Here you can add any processing you want to do with each Pokémon name
+done
