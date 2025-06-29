@@ -1,9 +1,11 @@
 list="bulbasaur ivysaur venusaur charmander charmeleon"
-curl -s https://pokeapi.co/api/v2/pokemon | jq -c '.results[]' | while read -r pokemon; do
+curl -s "https://pokeapi.co/api/v2/pokemon?limit=1000" | jq -c '.results[]' | while read -r pokemon; do
   name=$(echo "$pokemon" | jq -r '.name')
   url=$(echo "$pokemon" | jq -r '.url')
-  if [[ " $list " =~ " $name " ]]; then
-    curl -s "$url" >> "$name.json"
-    sleep 1
-  fi
+  for poke in $list; do
+    if [[ "$poke" == "$name" ]]; then
+      curl -s "$url" > "$name.json"
+      sleep 1
+    fi
+  done
 done
