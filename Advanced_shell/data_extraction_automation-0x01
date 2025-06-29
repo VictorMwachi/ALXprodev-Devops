@@ -8,11 +8,8 @@ curl -s https://pokeapi.co/api/v2/pokemon?limit=10 | jq -r '.results[].url' | wh
         height=$(echo "$line" | jq -r '.height')
         formatted_weight=$(echo "scale=2; $weight / 10" | bc)
         formatted_height=$(echo "scale=2; $height / 10" | bc)
-        echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
+        awk -v name="$name" -v type="$type" -v formatted_weight="$formatted_weight" -v formatted_height="$formatted_height" \
+            'BEGIN { printf "%s is of type %s, weighs %.2fkg, and is %.2fm tall.\n", name, type, formatted_weight, formatted_height }'
+        #echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
     done
-
-    # Convert weight to kg and height to meters
-    
-#done
-
 done
