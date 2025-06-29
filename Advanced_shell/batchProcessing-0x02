@@ -4,5 +4,6 @@ curl -s https://pokeapi.co/api/v2/pokemon | jq -c '.results[]' | while read -r p
   url=$(echo "$pokemon" | jq -r '.url')
   if [[ " $list " =~ " $name " ]]; then
     curl -s "$url" >> "$name.json"
+    sleep 1
   fi
 done
