@@ -10,6 +10,6 @@ curl -s https://pokeapi.co/api/v2/pokemon?limit=10 | jq -r '.results[].url' | wh
         formatted_height=$(echo "scale=2; $height / 10" | bc)
         awk -v name="$name" -v type="$type" -v formatted_weight="$formatted_weight" -v formatted_height="$formatted_height" \
             'BEGIN { printf "%s is of type %s, weighs %.2fkg, and is %.2fm tall.\n", name, type, formatted_weight, formatted_height }'
-        #echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
+        #echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall.sed"
     done
 done
