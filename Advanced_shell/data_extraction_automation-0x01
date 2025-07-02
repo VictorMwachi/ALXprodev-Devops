@@ -1,2 +1,15 @@
- #curl -s https://pokeapi.co/api/v2/pokemon?limit=10 | jq -r '.results[].url'|xargs -n 1 curl -s| jq -r '"\(.name) is of type \(.types[].type.name), weighs \(.weight)kg, and is \(.height)m tall."'
-awk '/pikachu/ {print}' data.json
+curl -s https://pokeapi.co/api/v2/pokemon?limit=10 | jq -r '.results[].url' | while read -r url; do
+    data=$(curl -s "$url")
+    for line in $data; do
+        #echo "$line"
+        name=$(echo "$line" | jq -r '.name')
+        type=$(echo "$line" | jq -r '.types[0].type.name')
+        weight=$(echo "$line" | jq -r '.weight')
+        height=$(echo "$line" | jq -r '.height')
+        formatted_weight=$(echo "scale=2; $weight / 10" | bc)
+        formatted_height=$(echo "scale=2; $height / 10" | bc)
+        awk -v name="$name" -v type="$type" -v formatted_weight="$formatted_weight" -v formatted_height="$formatted_height" \
+            'BEGIN { printf "%s is of type %s, weighs %.2fkg, and is %.2fm tall.\n", name, type, formatted_weight, formatted_height }'
+        #echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall.sed"
+    done
+done
