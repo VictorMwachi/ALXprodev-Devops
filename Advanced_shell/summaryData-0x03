@@ -1,0 +1,1 @@
+jq -r '["Name","Height (m)","Weight (Kg)"],[.name,.height/10,.weight/10]|@csv' *.json > data.csv
