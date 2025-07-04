@@ -2,7 +2,26 @@ outputfile="data.csv"
 echo "Name,Height (m),Weight (Kg)" > $outputfile
 for file in *.json; do
 echo $file
-  jq -r '["Name","Height (m)","Weight (Kg)"],[.name,.height/10,.weight/10]|@csv' "$file" >> $outputfile
+  jq -r '[.name, .height/10, .weight/10]|@csv' "$file" >> $outputfile
 done
-# Alternatively, you can use a single jq command to process all files at once:  
-#jq -r '["Name","Height (m)","Weight (Kg)"],[.name,.height/10,.weight/10]|@csv' *.json >> data.csv
+awk -F',' '
+    NR > 1 {  # Skip header row
+        # Remove quotes from numeric values if present
+        gsub(/"/, "", $2)
+        gsub(/"/, "", $3)
+        
+        height_sum += $2
+        weight_sum += $3
+        count++
+    }
+    END {
+        if (count > 0) {
+            avg_height = height_sum / count
+            avg_weight = weight_sum / count
+            printf "Average Height: %.2f m\n", avg_height
+            printf "Average Weight: %.2f kg\n", avg_weight
+        } else {
+            print "No data found for calculations"
+        }
+    }
+' "$OUTPUT_FILE"
