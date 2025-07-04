@@ -1,0 +1,8 @@
+list="bulbasaur ivysaur venusaur charmander charmeleon"
+# This script fetches data for multiple Pokémon concurrently using background jobs
+# and waits for all jobs to finish before exiting.    
+    for name in $list; do
+    url="https://pokeapi.co/api/v2/pokemon/$name"
+    curl -s "$url" > "$(basename $url).json" &
+    done
+    wait  # Wait for all background jobs to finish
