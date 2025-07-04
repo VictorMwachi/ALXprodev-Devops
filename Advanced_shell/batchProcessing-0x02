@@ -1,11 +1,9 @@
 list="bulbasaur ivysaur venusaur charmander charmeleon"
-curl -s "https://pokeapi.co/api/v2/pokemon?limit=1000" | jq -c '.results[]' | while read -r pokemon; do
-  name=$(echo "$pokemon" | jq -r '.name')
-  url=$(echo "$pokemon" | jq -r '.url')
-  for poke in $list; do
-    if [[ "$poke" == "$name" ]]; then
-      curl -s "$url" > "$name.json"
-      sleep 1
-    fi
-  done
-done
+for name in $list; do
+    echo "Processing Pokémon: $name"
+    url="https://pokeapi.co/api/v2/pokemon/$name"
+    curl -s "$url" > "$name.json"
+    echo "Fetched data for $name and saved to $name.json"
+    echo "sleeping for 2 seconds to avoid hitting the API rate limit"
+    sleep 2 # Sleep to avoid hitting the API rate limit
+    done

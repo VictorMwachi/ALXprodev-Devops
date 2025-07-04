@@ -1,6 +1,7 @@
 outputfile="data.csv"
 echo "Name,Height (m),Weight (Kg)" > $outputfile
 for file in *.json; do
+echo $file
   jq -r '["Name","Height (m)","Weight (Kg)"],[.name,.height/10,.weight/10]|@csv' "$file" >> $outputfile
 done
 # Alternatively, you can use a single jq command to process all files at once:  

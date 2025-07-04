@@ -1,8 +1,11 @@
 curl -s https://pokeapi.co/api/v2/pokemon?limit=10 | jq -r '.results[].url' | while read -r url; do
+    echo "Processing URL: $url"
+    # Fetch the JSON data from the URL
     data=$(curl -s "$url")
     for line in $data; do
         #echo "$line"
         name=$(echo "$line" | jq -r '.name')
+        echo "Processing Pokémon: $name"
         type=$(echo "$line" | jq -r '.types[0].type.name')
         weight=$(echo "$line" | jq -r '.weight')
         height=$(echo "$line" | jq -r '.height')
