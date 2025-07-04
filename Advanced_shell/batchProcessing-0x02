@@ -1,9 +1,9 @@
 list="bulbasaur ivysaur venusaur charmander charmeleon"
 for name in $list; do
-    echo "Processing Pokémon: $name"
+    echo "Fetching data for: $name..."
     url="https://pokeapi.co/api/v2/pokemon/$name"
-    curl -s "$url" > "$name.json"
-    echo "Fetched data for $name and saved to $name.json"
+    curl -s "$url"> "$name.json"
+    echo "Saved data to pokemon_data/$name.json"
     echo "sleeping for 2 seconds to avoid hitting the API rate limit"
     sleep 2 # Sleep to avoid hitting the API rate limit
     done
